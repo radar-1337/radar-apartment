@@ -2,13 +2,6 @@ ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
-function GetProperty(name)
-	for i=1, #Config.Properties, 1 do
-		if Config.Properties[i].name == name then
-			return Config.Properties[i]
-		end
-	end
-end
 
 function SetPropertyOwned(name, price, rented, owner)
 	MySQL.Async.execute('INSERT INTO owned_properties (name, price, rented, owner) VALUES (@name, @price, @rented, @owner)',
@@ -47,9 +40,6 @@ function RemoveOwnedProperty(name, owner)
 	end)
 end
 
-ESX.RegisterServerCallback('esx_property:getProperties', function(source, cb)
-	cb(Config.Properties)
-end)
 
 AddEventHandler('esx_ownedproperty:getOwnedProperties', function(cb)
 	MySQL.Async.fetchAll('SELECT * FROM owned_properties', {}, function(result)
