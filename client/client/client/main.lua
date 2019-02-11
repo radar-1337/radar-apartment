@@ -37,58 +37,9 @@ function DrawSub(text, time)
 	DrawSubtitleTimed(time, 1)
 end
 
-function CreateBlips()
-	for i=1, #Config.Properties, 1 do
-		local property = Config.Properties[i]
 
-		if property.entering then
-			Blips[property.name] = AddBlipForCoord(property.entering.x, property.entering.y, property.entering.z)
 
-			SetBlipSprite (Blips[property.name], 369)
-			SetBlipDisplay(Blips[property.name], 4)
-			SetBlipScale  (Blips[property.name], 1.0)
-			SetBlipAsShortRange(Blips[property.name], true)
 
-			BeginTextCommandSetBlipName("STRING")
-			AddTextComponentString(_U('free_prop'))
-			EndTextCommandSetBlipName(Blips[property.name])
-		end
-	end
-end
-
-function GetProperties()
-	return Config.Properties
-end
-
-function GetProperty(name)
-	for i=1, #Config.Properties, 1 do
-		if Config.Properties[i].name == name then
-			return Config.Properties[i]
-		end
-	end
-end
-
-function GetGateway(property)
-	for i=1, #Config.Properties, 1 do
-		local property2 = Config.Properties[i]
-
-		if property2.isGateway and property2.name == property.gateway then
-			return property2
-		end
-	end
-end
-
-function GetGatewayProperties(property)
-	local properties = {}
-
-	for i=1, #Config.Properties, 1 do
-		if Config.Properties[i].gateway == property.name then
-			table.insert(properties, Config.Properties[i])
-		end
-	end
-
-	return properties
-end
 
 function EnterProperty(name, owner)
 	local property       = GetProperty(name)
@@ -96,11 +47,6 @@ function EnterProperty(name, owner)
 	CurrentProperty      = property
 	CurrentPropertyOwner = owner
 
-	for i=1, #Config.Properties, 1 do
-		if Config.Properties[i].name ~= name then
-			Config.Properties[i].disabled = true
-		end
-	end
 
 	TriggerServerEvent('esx_property:saveLastProperty', name)
 
